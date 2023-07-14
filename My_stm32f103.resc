@@ -1,0 +1,31 @@
+using sysbus
+
+mach create
+machine LoadPlatformDescription @platforms/cpus/stm32f103.repl
+machine LoadPlatformDescriptionFromString "button: Miscellaneous.Button @ gpioPortC 13 { IRQ -> gpioPortC@13 }"
+
+
+include @./Logic_Probe.cs
+machine LoadPlatformDescription @./Add_Logic_Probes.repl
+
+include @./Socket_Logic_Analyzer.cs
+
+emulation CreateServerSocketLogicAnalyzer 4567 "LogicAnalyzerServer" false
+connector Connect sysbus.gpioPortC.Probe1 LogicAnalyzerServer
+connector Connect sysbus.gpioPortC.Probe2 LogicAnalyzerServer 
+
+$bin?=@./renode_103CBT6_001.elf
+
+
+macro reset
+"""
+    sysbus LoadELF $bin
+"""
+
+runMacro $reset
+
+machine StartGdbServer 3333
+
+
+
+

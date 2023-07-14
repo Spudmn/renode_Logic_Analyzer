@@ -1,0 +1,9 @@
+
+Probe1: Miscellaneous.Logic_Probe @ gpioPortC
+gpioPortC:
+    12 -> Probe1@0
+
+    
+Probe2: Miscellaneous.Logic_Probe @ gpioPortC
+gpioPortC:
+    13 -> Probe2@0    
